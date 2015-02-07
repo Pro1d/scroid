@@ -21,11 +21,11 @@ public class ErrorDialog {
 		final AlertDialog.Builder builder = new Builder(ctxt);
 		
 		builder.setTitle("Fatal error - running " + scriptName);
-		builder.setMessage(err.category+" :\nIn file \""+err.file+"\" at line " + err.line + " : " + err.msg);
+		builder.setMessage(err.category+" : <"+err.file+", " + err.line + ">\n" + err.msg);
 		
 		builder.setCancelable(false);
 		builder.setPositiveButton("I'm going to check my script !", listener);
-		
+		err.printStackTrace();
 		ctxt.runOnUiThread(new Runnable() {
 			public void run() {
 				builder.create().show();
@@ -38,7 +38,7 @@ public class ErrorDialog {
 		private String category;
 		private String msg;
 		private String file;
-		private int line;// commence au numéro de ligne 1
+		private int line;// commence au numï¿½ro de ligne 1
 
 		public ScriptException(String cat, String msg, String file, int l) {
 			category = cat;

@@ -23,12 +23,13 @@ public class ScriptRunner implements LowLevelAccess {
 	
 	public ScriptRunner(HashMap<String, ArrayList<StackInstructions>> cf) {
 		compiledFiles = cf;
+		Instructions.setLLA(this);
 	}
 	public void setIOService(StandardIOService ioSrv) {
 		ioService = ioSrv;
 	}
 	
-	private volatile boolean running = false; /// boolean utilisé pour connaître l'état de l'exécution, et non pour le commander
+	private volatile boolean running = false; /// boolean utilisï¿½ pour connaï¿½tre l'ï¿½tat de l'exï¿½cution, et non pour le commander
 	private volatile boolean end = false, pause = false, oneStep = false, stepByStepMode = false;
 	private boolean waitingForInput = false;
 	
@@ -59,9 +60,9 @@ public class ScriptRunner implements LowLevelAccess {
 		
 		running = true;
 
-		// TODO à completer ? à vérifier ? 
+		// TODO ï¿½ completer ? ï¿½ vï¿½rifier ? 
 		while(true) {
-			// En pause -> Attente du 'resume' si on est pas en pas-à-pas, ou de la fin de l'exécution
+			// En pause -> Attente du 'resume' si on est pas en pas-ï¿½-pas, ou de la fin de l'exï¿½cution
 			while(pause && !oneStep && !end)
 				try { Thread.sleep(5);
 				} catch (InterruptedException e) {}
@@ -97,7 +98,7 @@ public class ScriptRunner implements LowLevelAccess {
 			oneStep = true;
 	}
 	
-	// Activer/désactiver le mode pas à pas
+	// Activer/dï¿½sactiver le mode pas ï¿½ pas
 	public void enableStepByStep() {
 		stepByStepMode = true;
 	}
@@ -178,10 +179,10 @@ public class ScriptRunner implements LowLevelAccess {
 				/// Get data from the stack
 				for(int i = instruction.sublistSize; --i >= 0;) {
 					list.add(currentContext.stackData.pop());
-					/* TODO (cas impossible d'après la construction de la stack d'instructions)
+					/* TODO (cas impossible d'aprï¿½s la construction de la stack d'instructions)
 					if(data == null)
 						throw new ScriptException("Unexpected value in the struct");
-					list.add(0, data);// à ajouter à la fin (push) pour la nouvelle stack d'instruction*/
+					list.add(0, data);// ï¿½ ajouter ï¿½ la fin (push) pour la nouvelle stack d'instruction*/
 				}
 				currentContext.stackData.push(new StructData(list, true));
 				break;
@@ -202,7 +203,7 @@ public class ScriptRunner implements LowLevelAccess {
 		stackContext.push(currentContext);
 		currentContext = new Context(file, line, left, right);
 	}
-	/** Donne les paramètres donnés à la fonction actuelle */
+	/** Donne les paramï¿½tres donnï¿½s ï¿½ la fonction actuelle */
 	public Data getParameterLeft() throws ScriptException {
 		if(currentContext.paramLeft == null)
 			throw new ScriptException("The left parameter does not exist");
@@ -223,13 +224,13 @@ public class ScriptRunner implements LowLevelAccess {
 		currentContext = stackContext.pop();
 		stackContext.peek().stackData.push(returnedData);
 	}
-	/** Mets fin définitivement à l'exécution */
+	/** Mets fin dï¿½finitivement ï¿½ l'exï¿½cution */
 	public void end() {
 		end = true;
 	}
 	
-	/**** Accès variable ****/
- 	/** Crée une nouvelle variable (si inéxistante) dans le contexte actuelle et la retourne 
+	/**** Accï¿½s variable ****/
+ 	/** Crï¿½e une nouvelle variable (si inï¿½xistante) dans le contexte actuelle et la retourne 
 	 * @throws ScriptException */
 	public Data createVar(String name, int type) throws ScriptException {
 		Data newVar;
@@ -269,7 +270,7 @@ public class ScriptRunner implements LowLevelAccess {
 	public boolean isExistingVar(String name) {
 		return currentContext.localVariable.containsKey(name);
 	}
-	/** Donne la référence de la variable */
+	/** Donne la rï¿½fï¿½rence de la variable */
 	public Data getVar(String name) {
 		return currentContext.localVariable.get(name);
 	}
@@ -293,7 +294,7 @@ public class ScriptRunner implements LowLevelAccess {
 		return (double)(SystemClock.elapsedRealtime() - startTime) / 1000.0;
 	}
 	
-	/**** Entrée / Sortie standard ****/
+	/**** Entrï¿½e / Sortie standard ****/
 	public void out(CommandOut cmd, StringBuilder data) {
 		switch(cmd) {
 		case WRITE:
@@ -339,20 +340,21 @@ public class ScriptRunner implements LowLevelAccess {
 			file = _file;
 			line = _line; 
 			fileInstructions = compiledFiles.get(_file);
+			instructions = (StackInstructions) fileInstructions.get(line).clone();
 			paramLeft = _paramLeft;
 			paramRight = _paramRight;
 		}
 
-		/// Retourne la prochaine instruction à exécuter, null si la fin du fichier est atteinte
+		/// Retourne la prochaine instruction ï¿½ exï¿½cuter, null si la fin du fichier est atteinte
 		RunnableInstruction getNextInstruction() {
-			/// Si la ligne est terminée, on cherche la prochaine ligne non vide
+			/// Si la ligne est terminï¿½e, on cherche la prochaine ligne non vide
 			while(instructions.stack.isEmpty()) {
 				if(line >= fileInstructions.size())
 					return null;
 				
 				instructions = (StackInstructions) fileInstructions.get(line).clone();
 				line++;
-				//oneStep = false;// TODO copatibilité changement de contexte
+				//oneStep = false;// TODO copatibilitï¿½ changement de contexte
 			}
 			return instructions.stack.pop();
 		}
@@ -439,7 +441,7 @@ public class ScriptExec {
 					Data data = si.popData();
 					if(data == null)
 						throw new ScriptException("Unexpected value in the struct");
-					list.add(0, data);//** /*  /* ///* /* / à ajouter à la fin (push) pour la nouvelle stack d'instruction
+					list.add(0, data);//** /*  /* ///* /* / ï¿½ ajouter ï¿½ la fin (push) pour la nouvelle stack d'instruction
 				}
 				si.pushData(new StructData(list, true));
 				break;

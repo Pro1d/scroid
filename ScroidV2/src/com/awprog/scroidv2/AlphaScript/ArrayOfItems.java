@@ -35,7 +35,7 @@ class ArrayOfItems {
 		return list.size();
 	}
 	
-	/** Construit une liste d'items à partir d'une ligne de script brut */
+	/** Construit une liste d'items ï¿½ partir d'une ligne de script brut */
 	static public ArrayOfItems create(String line) throws ScriptException {
 		int cur = 0, len = line.length();
 		//ArrayOfItems array = new ArrayOfItems();
@@ -102,18 +102,18 @@ class ArrayOfItems {
 				cur++;
 			}
 			else if(c == ')') {
-				// parenthèse fermante inattendue
+				// parenthï¿½se fermante inattendue
 				if(stackList.size() == 1)
 					throw new ScriptException("Unexpected end of parenthesis");
 				
 				ArrayOfItems sl = new ArrayOfItems(stackList.pop());
-				// dernier élément ou structure vide
+				// dernier ï¿½lï¿½ment ou structure vide
 				if(sl.isEmpty())
 					throw new ScriptException("Nothing before the end of the parenthesis");
 				
 				sl.isInSubList = true;
 				
-				// completion de la liste mère d'ArrayOfItems
+				// completion de la liste mï¿½re d'ArrayOfItems
 				stackList.peek().get(stackList.peek().size()-1).sublist.add(sl);
 				
 				cur++;
@@ -125,13 +125,13 @@ class ArrayOfItems {
 					throw new ScriptException("Unexpected comma");
 				
 				ArrayOfItems sl = new ArrayOfItems(stackList.pop());
-				// élément de la structure vide
+				// ï¿½lï¿½ment de la structure vide
 				if(sl.isEmpty())
 					throw new ScriptException("Nothing before the comma");
 				
 				sl.isInSubList = true;
 				
-				// completion de la liste mère d'ArrayOfItems
+				// completion de la liste mï¿½re d'ArrayOfItems
 				stackList.peek().get(stackList.peek().size()-1).sublist.add(sl);
 
 				// nouvelle array cible
@@ -176,7 +176,7 @@ class ArrayOfItems {
 		String getString() {
 			if(type != Type.STRING)
 				return null;
-			return data.substring(1, data.length()-2);
+			return data.substring(1, data.length()-1);
 		}
 		String getWord() {
 			if(type != Type.WORD)
@@ -299,7 +299,7 @@ public class ArrayOfItems {
 				array.add(new Item(",", Item.COMMA));
 				cur++;
 			}
-			/// Math Operators \\\ // TODO : fuck code pour chagement de mot clé
+			/// Math Operators \\\ // TODO : fuck code pour chagement de mot clï¿½
 			/*else if(c == '*') {
 				array.add(new Item("mul", Item.WORD));
 				cur++;
@@ -312,7 +312,7 @@ public class ArrayOfItems {
 				array.add(new Item("add", Item.WORD));
 				cur++;
 			}
-			else if(c == '-') { // TODO conflit avec signe de négation
+			else if(c == '-') { // TODO conflit avec signe de nï¿½gation
 				array.add(new Item("sub", Item.WORD));
 				cur++;
 			}

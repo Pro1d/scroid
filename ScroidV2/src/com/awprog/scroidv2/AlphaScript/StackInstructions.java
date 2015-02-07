@@ -27,12 +27,34 @@ public class StackInstructions {
 		return new StackInstructions(this);
 	}
 	
-	/** Construit la pile d'isntruction à partir d'une ligne formatée */
-	static class NoReccObj { int start, end; ArrayOfItems array; public NoReccObj(ArrayOfItems a, int s, int e) {start = s; end = e; array = a;}}
+	
+	static class NoReccObj {
+		int start, end; ArrayOfItems array;
+		public NoReccObj(ArrayOfItems a, int s, int e) {
+			start = s; end = e; array = a;
+		}
+	}
+	/** Construit la pile d'isntruction ï¿½ partir d'une ligne formatï¿½e */
 	static public StackInstructions create(ArrayOfItems line) throws ScriptException {
-		// Objet cible à construire
+		// Objet cible ï¿½ construire
 		StackInstructions si = new StackInstructions();
-		/// Stack utilisée pour éviter d'utiliser la réccursivité
+		
+		// Cas spÃ©ciaux : rien Ã  exÃ©cuter
+		if(line.size() == 0)
+			return si;
+		else {
+			Item i = line.get(0);
+			/// Mot clÃ© sans action 
+			if(i.type == Item.Type.WORD) {
+				if(i.data.equals(Compiler.FUNC)
+						|| i.data.equals(Compiler.FUNCR)
+						|| i.data.equals(Compiler.FUNCL)
+						|| i.data.equals(Compiler.FUNCLR))
+					return si;
+			}
+		}
+		
+		/// Stack utilisï¿½e pour ï¿½viter d'utiliser la rï¿½ccursivitï¿½
 		Stack<NoReccObj> noRecc = new Stack<NoReccObj>();
 		
 		noRecc.push(new NoReccObj(line, 0, line.size()));
@@ -42,7 +64,7 @@ public class StackInstructions {
 			int posPrMin = getMinPriority(o.array, o.start, o.end);
 			RunnableInstruction ri = new RunnableInstruction();
 			
-			// pas de fonction à executer
+			// pas de fonction ï¿½ executer
 			if(posPrMin == -1) {
 				if(o.end - o.start > 1)
 					throw new ScriptException("Unexpected data from "+o.array.get(o.start).data+" to "+o.array.get(o.end-1).data);// Bad message for two-words line
@@ -83,32 +105,32 @@ public class StackInstructions {
 				ri.targetLine = ifct.targetLine; // target line pour les les structures conditionnelles et les boucles
 				si.stack.push(ri);
 				
-				/// Absence de valeur retournée inattendue \\\
+				/// Absence de valeur retournï¿½e inattendue \\\
 				// TODO check compatibility with manual func 
 				if(ri.instrDef.returned == DT.none && si.stack.size() > 1)
 					throw new ScriptException("The function \""+ifct.getWord()+"\" does not return data, but it is required here");
 				
-				/// Présence de données à gauche \\\ 
+				/// Prï¿½sence de donnï¿½es ï¿½ gauche \\\ 
 				if(posPrMin - o.start >= 1) { 
 					if(Instructions.get(ifct.data).before == DT.none)
-						throw new ScriptException("The function \""+ifct.getWord()+"\" does not take left paramater. Unexpected data before \'" + ifct.getWord() + "\'");
+						throw new ScriptException("The function \""+ifct.getWord()+"\" does not take left parameter. Unexpected data before \'" + ifct.getWord() + "\'");
 					else
 						noRecc.push(new NoReccObj(o.array, o.start, posPrMin));//ri.left = getRunInstr(line, start, posPrMin);
 				}
-				/// Absence de données à gauche inattendue \\\
+				/// Absence de donnï¿½es ï¿½ gauche inattendue \\\
 				else if(Instructions.get(ifct.data).before != Data.DT.none)
-					throw new ScriptException("The function \""+ifct.getWord()+"\" must have left paramater. Missing data before \'" + ifct.getWord() + "\'");
+					throw new ScriptException("The function \""+ifct.getWord()+"\" must have left parameter. Missing data before \'" + ifct.getWord() + "\'");
 				
-				/// Présence de données à droite \\\
+				/// Prï¿½sence de donnï¿½es ï¿½ droite \\\
 				if(o.end - posPrMin - 1 >= 1) {
 					if(Instructions.get(ifct.data).after == DT.none)
-						throw new ScriptException("The function \""+ifct.getWord()+"\" does not take right paramater. Unexpected data after \'" + ifct.getWord() + "\'");
+						throw new ScriptException("The function \""+ifct.getWord()+"\" does not take right parameter. Unexpected data after \'" + ifct.getWord() + "\'");
 					else
 						noRecc.push(new NoReccObj(o.array, posPrMin+1, o.end));//ri.right = getRunInstr(line, posPrMin+1, end);
 				}
-				/// Absence de données à droite inattendue \\\
+				/// Absence de donnï¿½es ï¿½ droite inattendue \\\
 				else if(Instructions.get(ifct.data).after != DT.none)
-					throw new ScriptException("The function \""+ifct.getWord()+"\" must have right paramater. Missing data after \'" + ifct.getWord() + "\'");
+					throw new ScriptException("The function \""+ifct.getWord()+"\" must have right parameter. Missing data after \'" + ifct.getWord() + "\'");
 				
 			}
 		}

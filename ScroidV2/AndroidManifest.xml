@@ -23,15 +23,12 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="com.awprog.scroidv2.Editeur"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
         <activity android:name="com.awprog.scroidv2.EditorActivity"
             android:theme="@android:style/Theme.NoTitleBar"
         	android:windowSoftInputMode="adjustResize">
         </activity>
         
-        <activity android:name="com.awprog.scroidv2.Executeur"
+        <activity android:name="com.awprog.scroidv2.RunnerActivity"
             android:theme="@android:style/Theme.NoTitleBar"
         	android:windowSoftInputMode="adjustResize">
         </activity>

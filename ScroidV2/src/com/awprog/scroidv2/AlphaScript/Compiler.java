@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+import android.util.Log;
+
 import com.awprog.scroidv2.Project;
 import com.awprog.scroidv2.AlphaScript.Data.DT;
 import com.awprog.scroidv2.AlphaScript.ErrorDialog.ScriptException;
@@ -24,14 +26,20 @@ public class Compiler {
 		isBuilt = false;
 		preCompiledFiles.clear();
 		compiledFiles.clear();
+		/// Clear the declared functions
+		Instructions.instructions.clear();
+		/// Re-add the native functions
+		Instructions.addNativeInstructions();
 	}
 	public void build() throws ScriptException {
 		clean();
 		
 		if(!mProject.isLoaded())
 			mProject.load();
+		
 		for(int i = mProject.getNbFiles(); --i >= 0;) {
 			String name = mProject.getFileName(i);
+
 			/// Script brut -> array of items
 			try {
 				preCompiledFiles.put(name, getArraysOfItemsFile(mProject.getFileContent(i)));
@@ -57,7 +65,7 @@ public class Compiler {
 			String name = mProject.getFileName(i);
 			
 			try {
-				compiledFiles.put(name, getStackInstructionsFile(preCompiledFiles.get(i)));
+				compiledFiles.put(name, getStackInstructionsFile(preCompiledFiles.get(name)));
 			} catch (ScriptException e) {
 				e.setFile(name);
 				e.setCat("Instruction stack building");
@@ -120,8 +128,8 @@ public class Compiler {
 		boolean hasSomeReturn = false, fullReturning = false, returnInScope = false, left = false, right = false;
 		String name = null;
 		public ScopeObj(ScopeType t, int l){type=t;line=l;}}
-	private static final String IF = "if", ELSIF = "elsif", ELSE = "else", ENDIF = "endif", 
-								WHILE = "while", ENDWHILE = "while", // BREAK, CONTINUE
+	public static final String IF = "if", ELSIF = "elsif", ELSE = "else", ENDIF = "endif", 
+								WHILE = "while", ENDWHILE = "endwhile", // BREAK, CONTINUE
 								FUNC = "func", FUNCR = "funcr", FUNCL = "funcl", FUNCLR = "funclr",
 								ENDFUNC = "endfunc", RETURN = "return";
 	private void checkAndSetUpStructure(ArrayList<ArrayOfItems> file, boolean isMainFile, String fileName) throws ScriptException {
@@ -297,7 +305,7 @@ public class Compiler {
 			throw new ScriptException("Uncomplete structure (missing end of "+scopeStack.peek().type.toString()+")", line-1);
 		
 	}
-	 
+	
 	/**
 	 * @throws ScriptException
 	 */

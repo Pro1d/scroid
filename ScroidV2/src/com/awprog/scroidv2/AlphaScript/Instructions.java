@@ -4,28 +4,37 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+import android.util.Log;
+
 import com.awprog.scroidv2.AlphaScript.Data.DT;
 import com.awprog.scroidv2.AlphaScript.ErrorDialog.ScriptException;
 
 public class Instructions {
 	static final HashMap<String, InstructionDefinition> instructions = new HashMap<String, InstructionDefinition>();
-	static LowLevelAccess mLLA;
- 	static private void addInstruction(String name, int priority, int left, int right, int returned, RunnableFunction rf) {
+	
+	/** Reference to the LowLeveAccess instance **/
+	//static class LowLevelAccessReference { LowLevelAccess lla; };
+	//private static LowLevelAccessReference mLLAR = new LowLevelAccessReference();
+	static LowLevelAccess lla;
+ 	static void setLLA(LowLevelAccess lla) {
+		Instructions.lla = lla;
+	}
+	
+	static private void addInstruction(String name, int priority, int left, int right, int returned, RunnableFunction rf) {
 		instructions.put(name, new InstructionDefinition(name, priority, left, right, returned, rf));
 	}
 	static public void addInlineFunction(String name, int left, int right, int returned, final String file, final int line) throws ScriptException {
 		if(isExisting(name))
 			throw new ScriptException("The function \""+name+"\" already exists");
-		
+
 		addInstruction(name, 800, left, right, returned, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
-				// changement de context, accès à la fonction au fichier et ligne désignés, avec paramètres (ou pas)
-				mLLA.pushContext(file, line, getParams().inLeft, getParams().inRight);
+				// changement de context, accï¿½s ï¿½ la fonction au fichier et ligne dï¿½signï¿½s, avec paramï¿½tres (ou pas)
+				lla.pushContext(file, line, getParams().inLeft, getParams().inRight);
 		}});
 	}
 	
-	static public void init(final LowLevelAccess lla) {
-		mLLA = lla;
+	static public void addNativeInstructions() {
 		/*
 		//********* FUNCTION ******** /
 		instructions.put("function", new InstructionDefinition("", 0, DT.none, DT.none, DT.none, new RunnableFunction() {
@@ -84,7 +93,7 @@ public class Instructions {
 		instructions.put("for", new InstructionDefinition("for", 0, DT.number|DT.notdef|writable, DT.struct, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				if left type = undef -> create var, set value to start
-				//else scriptexception : la variable existe déjà
+				//else scriptexception : la variable existe dï¿½jï¿½
 				
 				left += end-start < 0 ? -1 : 1;
 				if left equal or out of end range -> gotoendfor ; // remove var
@@ -872,22 +881,24 @@ public class Instructions {
 		/********* FUNC ********/
 		addInstruction("func", 0, DT.none, DT.all|DT.writable, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
-				//(TODO) nothing
-		}});/********* FUNCL ********/
+				//(TODO) nothing / it should not be executed
+		}});
+		/********* FUNCL ********/
 		addInstruction("funcl", 0, DT.none, DT.all|DT.writable, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
-				//(TODO) nothing
+				//(TODO) nothing / it should not be executed
 		}});
 		/********* FUNCR ********/
 		addInstruction("funcr", 0, DT.none, DT.all|DT.writable, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
-				//(TODO) nothing
+				//(TODO) nothing / it should not be executed
 		}});
 		/********* FUNCLR ********/
 		addInstruction("funclr", 0, DT.none, DT.all|DT.writable, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
-				//(TODO) nothing
+				//(TODO) nothing / it should not be executed
 		}});
+		
 		/********* ENDFUNC ********/
 		addInstruction("endfunc", 0, DT.none, DT.none, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
@@ -920,7 +931,7 @@ public class Instructions {
 		
 		for(int i = paramsType.length-1; i >= 0; --i)
 			if((paramsType[i] & sd.getDataAt(i).getType()) == 0)
-				throw new ScriptException("Parameters n°" + (i+1) + " does not match for " + funcName);
+				throw new ScriptException("Parameters nï¿½" + (i+1) + " does not match for " + funcName);
 		
 		return true;
 	}

@@ -294,6 +294,6 @@ in your code.
 	};
 	
 	private void setTextConsole(StringBuilder sb) {
-		mTextViewConsole.setText(sb);
+		mTextViewConsole.setText(sb.toString());
 	}
 }
