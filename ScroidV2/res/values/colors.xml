@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#181818</color>
+    
+    <color name="titre_background">#323232</color>
+    <color name="titre_texte">#EEEEEE</color>
+    
+    <color name="box_background">#505050</color>
+    
+    <color name="item_background">#707070</color>
+    <color name="item_texte">#EEEEEE</color>
+    
+    <color name="edit_background">#F0F0F0</color>
+    <color name="edit_texte">#444444</color>
+    
+    <color name="console_background">#00000000</color>
+    <color name="console_texte">#F0F0F0</color>
+    
+    <color name="button_focused">#4A7095</color>
+    <color name="button_pressed">#2A70B0</color>
+    <color name="button_disabled">#707070</color>
+    <color name="button">#909090</color>
+    
+    <color name="edit_pressed">#88B6E3</color>
+    <color name="edit_focused">#BAD5EF</color>
+    
+    <color name="item_doc_background">#EEE</color>
+    <color name="item_doc_title_background">#8CF</color>
+    <color name="item_doc_name">#222</color>
+    <color name="item_doc_bef_aft">#444</color>
+    <color name="item_doc_comm">#000</color>
+</resources>

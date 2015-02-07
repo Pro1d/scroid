@@ -1,0 +1,114 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_small"
+    android:background="@color/background">
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/titre_background"
+        android:padding="@dimen/padding_verysmall"
+        android:layout_marginBottom="@dimen/padding_small">
+
+        <TextView
+            android:id="@+id/tv_titre_executeur"
+            android:gravity="center_horizontal"
+            android:textColor="@color/titre_texte"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding_verysmall"/>
+
+    </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/sv_executeur"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/padding_small"
+        android:layout_weight="1"
+        android:background="@color/item_background" >
+
+        <TextView
+            android:id="@+id/tv_executeur"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/console_background"
+            android:padding="@dimen/padding_verysmall"
+            android:textColor="@color/console_texte"
+            android:typeface="monospace" />
+    </ScrollView>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@color/box_background"
+        android:padding="@dimen/padding_verysmall" >
+
+        <EditText
+            android:id="@+id/et_executeur"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="@dimen/padding_verysmall"
+            android:background="@color/selector_edittext"
+            android:imeOptions="actionDone"
+            android:inputType="numberSigned|numberDecimal"
+            android:padding="@dimen/padding_verysmall"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/b_executeur_continue"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/selector_button"
+            android:gravity="center"
+            android:text="Press to continue..."
+            android:textColor="@color/item_texte"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/pb_executeur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/ll_boolean"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/box_background"
+            android:visibility="gone" >
+            
+	        <Button
+	            android:id="@+id/b_executeur_true"
+	            android:layout_width="0dp"
+	            android:layout_height="fill_parent"
+	            android:layout_marginRight="@dimen/padding_verysmall"
+	            android:layout_weight="0.5"
+	            android:background="@color/selector_button"
+	            android:gravity="center"
+	            android:text="Yes / True"
+	            android:textColor="@color/item_texte" />
+	
+	        <Button
+	            android:id="@+id/b_executeur_false"
+	            android:layout_width="0dp"
+	            android:layout_height="fill_parent"
+	            android:layout_marginLeft="@dimen/padding_verysmall"
+	            android:layout_weight="0.5"
+	            android:background="@color/selector_button"
+	            android:gravity="center"
+	            android:text="No / False"
+	            android:textColor="@color/item_texte" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

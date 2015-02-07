@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/item_doc_background"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_verysmall" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/item_doc_title_background"
+        android:padding="@dimen/padding_verysmall" >
+
+        <TextView
+            android:id="@+id/tv_before_item_doc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding_large"
+            android:background="#0000"
+            android:text="([Type] paramLeft)"
+            android:textColor="@color/item_doc_bef_aft" />
+
+        <TextView
+            android:id="@+id/tv_name_item_doc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_before_item_doc"
+            android:background="#0000"
+            android:text="FUNCTION"
+            android:textColor="@color/item_doc_name" />
+        
+        <TextView
+            android:id="@+id/tv_after_item_doc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_large"
+            android:layout_toRightOf="@id/tv_name_item_doc"
+            android:background="#0000"
+            android:text="([Type] paramRight)"
+            android:textColor="@color/item_doc_bef_aft" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_comm_item_doc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#0000"
+        android:padding="@dimen/padding_verysmall"
+        android:text="Commentaire qui est trop bien parce que c&apos;est qu&apos;il est écrit dans la langue du mec que c&apos;est que il s&apos;appelle Shakespeare"
+        android:textColor="@color/item_doc_comm" />
+
+    <TextView
+        android:id="@+id/tv_return_item_doc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#0000"
+        android:padding="@dimen/padding_verysmall"
+        android:text="Return : [Type] value"
+        android:textColor="@color/item_doc_bef_aft" />
+    
+</LinearLayout>

@@ -1,0 +1,197 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background"
+    android:baselineAligned="false"
+    android:padding="@dimen/padding_small" >
+
+    <LinearLayout
+        android:id="@+id/ll_titlebar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_small"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ib_editeur_title_previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/selector_button"
+            android:contentDescription="@string/app_name"
+            android:src="@android:drawable/ic_media_previous" />
+
+        <TextView
+            android:id="@+id/tv_titre_editeur"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/padding_verysmall"
+            android:layout_marginLeft="@dimen/padding_verysmall"
+        	android:padding="@dimen/padding_verysmall"
+        	android:background="@color/titre_background"
+            android:gravity="center"
+            android:textColor="@color/titre_texte" />
+        
+        <ImageButton
+            android:id="@+id/ib_editeur_title_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/selector_button"
+            android:contentDescription="@string/app_name"
+            android:src="@android:drawable/ic_media_next" />
+        
+    </LinearLayout>
+        
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/ll_titlebar" >
+
+        <RelativeLayout
+            android:id="@+id/rl_toolbox_editeur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/box_background"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_verysmall" >
+
+            <ImageButton
+                android:id="@+id/ib_editeur_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="@dimen/padding_verysmall"
+                android:background="@color/selector_button"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/save" />
+
+            <ImageButton
+                android:id="@+id/ib_editeur_run"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ib_editeur_save"
+                android:layout_marginBottom="@dimen/padding_verysmall"
+                android:background="@color/selector_button"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/run" />
+
+            <ImageButton
+                android:id="@+id/ib_editeur_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ib_editeur_run"
+                android:layout_marginBottom="@dimen/padding_verysmall"
+                android:background="@color/selector_button"
+                android:contentDescription="@string/app_name"
+                android:src="@android:drawable/ic_menu_view" />
+
+            <ImageButton
+                android:id="@+id/ib_editeur_debug"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ib_editeur_check"
+                android:layout_marginBottom="@dimen/padding_verysmall"
+                android:background="@color/selector_button"
+                android:contentDescription="@string/app_name"
+                android:scaleType="center"
+                android:src="@android:drawable/ic_menu_manage" />
+
+            <ImageButton
+                android:id="@+id/ib_editeur_doc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ib_editeur_debug"
+                android:layout_marginBottom="@dimen/padding_verysmall"
+                android:background="@color/selector_button"
+                android:contentDescription="@string/app_name"
+                android:scaleType="center"
+                android:src="@android:drawable/ic_menu_info_details" />
+
+            <ImageButton
+                android:id="@+id/ib_editeur_addfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ib_editeur_doc"
+                android:layout_marginBottom="@dimen/padding_verysmall"
+                android:background="@color/selector_button"
+                android:contentDescription="@string/app_name"
+                android:scaleType="center"
+                android:src="@android:drawable/ic_menu_add" />
+
+            <ImageButton
+                android:id="@+id/ib_editeur_delfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ib_editeur_addfile"
+                android:layout_marginBottom="@dimen/padding_verysmall"
+                android:background="@color/selector_button"
+                android:contentDescription="@string/app_name"
+                android:scaleType="center"
+                android:src="@android:drawable/ic_menu_delete" />
+
+            <ImageButton
+                android:id="@+id/ib_editeur_renamefile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ib_editeur_delfile"
+                android:layout_marginBottom="@dimen/padding_verysmall"
+                android:background="@color/selector_button"
+                android:contentDescription="@string/app_name"
+                android:scaleType="center"
+                android:src="@android:drawable/ic_menu_edit" />
+
+            <ImageButton
+                android:id="@+id/ib_editeur_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ib_editeur_renamefile"
+                android:background="@color/selector_button"
+                android:contentDescription="@string/app_name"
+                android:scaleType="center"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+            <TextView
+                android:id="@+id/tv_editeur_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="bottom"
+                android:text="42, 13"
+                android:textColor="@color/item_texte"
+                android:typeface="normal" />
+
+
+        </RelativeLayout>
+
+        <com.awprog.scroidv2.AlphaScript.ColorEditText
+            android:id="@+id/et_editeur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="@dimen/padding_small"
+            android:layout_toLeftOf="@id/rl_toolbox_editeur"
+            android:background="@color/edit_background"
+            android:ems="10"
+            android:gravity="top|left"
+            android:imeOptions="flagNoEnterAction"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:padding="@dimen/padding_small"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="vertical"
+            android:textColor="@color/edit_texte"
+            android:textSize="16sp"
+            android:typeface="monospace" >
+
+            <requestFocus />
+        </com.awprog.scroidv2.AlphaScript.ColorEditText>
+
+    </RelativeLayout>
+
+</RelativeLayout>
