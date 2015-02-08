@@ -3,7 +3,7 @@ package com.awprog.scroidv2.AlphaScript;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import android.R;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.SystemClock;
 import android.text.Editable;
@@ -150,7 +150,7 @@ public class ColorEditText extends MultiAutoCompleteTextView {
 		InputFilter filterAutoIndent = new InputFilter() {
 			public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
 				//Log.i("###", ""+dstart+" "+dend+"\n\""+dest+"\"");
-				// Ajoute autant de tabulation et d'espace qu'à la ligne précédante
+				// Ajoute autant de tabulation et d'espace qu'ï¿½ la ligne prï¿½cï¿½dante
 				if(end-start == 1 && source.charAt(start) == '\n') {
 					String strDest = dest.toString();
 					int lineStart = strDest.lastIndexOf('\n', dstart-1) + 1;
@@ -237,6 +237,7 @@ public class ColorEditText extends MultiAutoCompleteTextView {
 		//	colorText.setSpan(new StyleSpan((bold?Typeface.BOLD:0)|(italic?Typeface.ITALIC:0)), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 	}
 	
+	@SuppressLint("DefaultLocale")
 	private SpannableString getSpannableString(String text) {
 		SpannableString colorText = new SpannableString(text);
 		int index = 0;

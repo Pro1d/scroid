@@ -16,6 +16,8 @@ import com.awprog.scroidv2.AlphaScript.Instructions.Parameters;
 import com.awprog.scroidv2.AlphaScript.StackInstructions.RunnableInstruction;
 
 public class ScriptRunner implements LowLevelAccess {
+	private static final int maxStackSize = 1000;
+	
 	private Stack<Context> stackContext = new Stack<Context>();
 	private Context currentContext;// le contexte actuel n'est pas dans la pile de contexte
 	private HashMap<String, ArrayList<StackInstructions>> compiledFiles;
@@ -175,16 +177,19 @@ public class ScriptRunner implements LowLevelAccess {
 			
 			// LIST
 			case SUBLIST:
-				ArrayList<Data> list = new ArrayList<Data>(instruction.sublistSize);
-				/// Get data from the stack
-				for(int i = instruction.sublistSize; --i >= 0;) {
-					list.add(currentContext.stackData.pop());
-					/* TODO (cas impossible d'apr�s la construction de la stack d'instructions)
-					if(data == null)
-						throw new ScriptException("Unexpected value in the struct");
-					list.add(0, data);// � ajouter � la fin (push) pour la nouvelle stack d'instruction*/
+				/// If the struct contains only one item, just push it <=> do nothing
+				/// else rebuild the struct and push it
+				if(instruction.sublistSize > 1) {
+					ArrayList<Data> list = new ArrayList<Data>(instruction.sublistSize);
+					/// Get data from the stack
+					for(int i = instruction.sublistSize; --i >= 0;) {
+						list.add(0, currentContext.stackData.pop());
+						/* TODO (cas impossible d'apr�s la construction de la stack d'instructions)
+						if(data == null)
+							throw new ScriptException("Unexpected value in the struct");*/
+					}
+					currentContext.stackData.push(new StructData(list, true));
 				}
-				currentContext.stackData.push(new StructData(list, true));
 				break;
 		default:
 			throw new ScriptException("Unknown error");
@@ -196,12 +201,16 @@ public class ScriptRunner implements LowLevelAccess {
 	/**** Context & Cie ****/
 	/** Change le compteur ordinal :P */
 	public void setNextLine(int line) {
-		stackContext.peek().line = line;
+		new Exception().printStackTrace();
+		/*stackContext.peek()*/currentContext.line = line;
 	}
 	/** Change de contexte (appel de fonction) */
-	public void pushContext(String file, int line, Data left, Data right) {
+	public void pushContext(String file, int line, Data left, Data right) throws ScriptException {
 		stackContext.push(currentContext);
 		currentContext = new Context(file, line, left, right);
+		// Vérification de la taille de la pile
+		if(stackContext.size() > maxStackSize)
+			throw new ScriptException("Stack overflow : the call stack is limited to a size of "+maxStackSize);
 	}
 	/** Donne les param�tres donn�s � la fonction actuelle */
 	public Data getParameterLeft() throws ScriptException {
@@ -340,7 +349,10 @@ public class ScriptRunner implements LowLevelAccess {
 			file = _file;
 			line = _line; 
 			fileInstructions = compiledFiles.get(_file);
+			
 			instructions = (StackInstructions) fileInstructions.get(line).clone();
+			line++;
+			
 			paramLeft = _paramLeft;
 			paramRight = _paramRight;
 		}

@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-import android.util.Log;
+import android.annotation.SuppressLint;
 
 import com.awprog.scroidv2.AlphaScript.Data.DT;
 import com.awprog.scroidv2.AlphaScript.ErrorDialog.ScriptException;
 
+@SuppressLint("DefaultLocale")
 public class Instructions {
 	static final HashMap<String, InstructionDefinition> instructions = new HashMap<String, InstructionDefinition>();
 	
@@ -910,12 +911,12 @@ public class Instructions {
 				lla.popContext(getParams().inRight.clone());
 		}});
 		/********* ARGRIGHT ********/
-		addInstruction("argright", 0, DT.none, DT.none, DT.all, new RunnableFunction() {
+		addInstruction("argright", 1000, DT.none, DT.none, DT.all, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				getParams().setReturn(lla.getParameterRight()/*.clone() TODO check compatibility */);
 		}});
 		/********* ARGLEFT ********/
-		addInstruction("argleft", 0, DT.none, DT.none, DT.number, new RunnableFunction() {
+		addInstruction("argleft", 1000, DT.none, DT.none, DT.number, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				getParams().setReturn(lla.getParameterLeft()/*.clone() TODO check compatibility */);
 		}});

@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.awprog.scroid.R;
 import com.awprog.scroidv2.AlphaScript.ColorEditText;
 
 public class EditorActivity extends Activity {

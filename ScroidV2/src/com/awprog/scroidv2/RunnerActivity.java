@@ -1,7 +1,6 @@
 package com.awprog.scroidv2;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.awprog.scroid.R;
 import com.awprog.scroidv2.StandardIOService.SyncData;
 import com.awprog.scroidv2.AlphaScript.Compiler;
 import com.awprog.scroidv2.AlphaScript.ErrorDialog;
@@ -163,11 +161,11 @@ in your code.
 				if(actionId == EditorInfo.IME_ACTION_DONE && syncDataRef != null) {
 					/// String input
 					if(v.getInputType() == InputType.TYPE_CLASS_TEXT) {
-						syncDataRef.s = (String) v.getText();
+						syncDataRef.s = v.getText().toString();
 					}
 					/// Number input
 					else {
-						String txt = (String)v.getText();
+						String txt = v.getText().toString();
 						if(txt.length() == 0)
 							return false;
 						syncDataRef.n = Double.parseDouble(txt);

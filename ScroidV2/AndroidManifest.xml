@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.awprog.scroid"
+    package="com.awprog.scroidv2"
     android:versionCode="1"
     android:versionName="1.0" >
 

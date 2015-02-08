@@ -14,7 +14,6 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.awprog.scroid.R;
 import com.awprog.scroidv2.AlphaScript.Dictionnary;
 
 public class DocView {
@@ -250,15 +249,15 @@ public class DocView {
 		        for (int i = 0; i < 5; i++) {
 		            Map<String, String> curGroupMap = new HashMap<String, String>();
 		            groupData.add(curGroupMap);
-		            curGroupMap.put(NAME, ""+(1+i)+(i==0?"ère":"ème")+" année");
-		            curGroupMap.put(IS_EVEN, "Année/PO");
+		            curGroupMap.put(NAME, ""+(1+i)+(i==0?"ï¿½re":"ï¿½me")+" annï¿½e");
+		            curGroupMap.put(IS_EVEN, "Annï¿½e/PO");
 		            
 		            List<Map<String, String>> children = new ArrayList<Map<String, String>>();
 			        for (int j = 0; j < mListGroups[i].length; j++) {
 		                Map<String, String> curChildMap = new HashMap<String, String>();
 		                children.add(curChildMap);
 		                curChildMap.put(NAME, mListGroups[i][j]);
-		                //curChildMap.put(IS_EVEN, "Wesh z\'y va ! choisi ce pegrou ci cé celui que cé ke tu ve maté");
+		                //curChildMap.put(IS_EVEN, "Wesh z\'y va ! choisi ce pegrou ci cï¿½ celui que cï¿½ ke tu ve matï¿½");
 		            }
 		            childData.add(children);
 		        }

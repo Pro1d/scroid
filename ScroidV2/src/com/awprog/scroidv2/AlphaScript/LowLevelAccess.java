@@ -10,9 +10,9 @@ public interface LowLevelAccess {
 	/** Change le compteur ordinal :P */
 	public void setNextLine(int line);
 	
-	/** Change de contexte (appel de fonction avec paramètres) */
-	public void pushContext(String file, int line, Data leftParam, Data rightParam);
-	/** Donne les paramètres reçus par la fonction actuelle */
+	/** Change de contexte (appel de fonction avec paramï¿½tres) */
+	public void pushContext(String file, int line, Data leftParam, Data rightParam) throws ScriptException;
+	/** Donne les paramï¿½tres reï¿½us par la fonction actuelle */
 	public Data getParameterLeft() throws ScriptException;
 	public Data getParameterRight() throws ScriptException;
 	
@@ -21,29 +21,29 @@ public interface LowLevelAccess {
 	/** Pour sortir d'une fonction et retourner une valeur */
 	public void popContext(Data returnedData);
 
-	/** Interrompre définitivement l'exécution **/
+	/** Interrompre dï¿½finitivement l'exï¿½cution **/
 	public void end();
 	
-	/**** Accès variable ****/
- 	/** Crée une nouvelle variable (si inéxistante) dans le contexte actuelle et la retourne 
+	/**** Accï¿½s variable ****/
+ 	/** Crï¿½e une nouvelle variable (si inï¿½xistante) dans le contexte actuelle et la retourne 
 	 * @throws ScriptException */
 	public Data createVar(String name, int type) throws ScriptException;
 	/** Indique si la variable existe dans ce contexte */
 	public boolean isExistingVar(String name);
-	/** Donne la référence de la variable */
+	/** Donne la rï¿½fï¿½rence de la variable */
 	public Data getVar(String name);
 	
 	/**** Temps ****/
 	public void sleep(long millis);
-	/** Retourne le nombre de secondes écoulées depuis le début de l'exécution**/
+	/** Retourne le nombre de secondes ï¿½coulï¿½es depuis le dï¿½but de l'exï¿½cution**/
 	public double getElapsedTime();
 	
-	/**** Entrée / Sortie standard ****/
+	/**** Entrï¿½e / Sortie standard ****/
 	enum CommandOut { CLEAR, WRITE };
 	enum CommandIn { STRING, NUMBER, PAUSE, BOOLEAN };
 	/** Pour des commandes sur la sortie standard (console) **/
 	public void out(CommandOut cmd, StringBuilder data);
-	/** Pour des commandes sur l'entrée standard (EdtiText + bouton) **/
+	/** Pour des commandes sur l'entrï¿½e standard (EdtiText + bouton) **/
 	public void in(CommandIn cmd, Data data);
 
 }

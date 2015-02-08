@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.awprog.scroid.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -82,7 +80,7 @@ public class Main extends Activity {
 					builder.setTitle("Project \"" + projName + "\"");
 					builder.setItems(items, new DialogInterface.OnClickListener() {
 					    public void onClick(DialogInterface dialog, int item) {
-					    	// Boîte de dialogue
+					    	// Boï¿½te de dialogue
 							AlertDialog.Builder ad = new AlertDialog.Builder(Main.this);
 							FrameLayout layout = new FrameLayout(Main.this);
 							final EditText text = new EditText(Main.this);
@@ -141,9 +139,9 @@ public class Main extends Activity {
 		myAdapter adpt = new myAdapter(this);
 		list.setAdapter(adpt);
 		
-		/* vérification si texte de secours enregistré
+		/* vï¿½rification si texte de secours enregistrï¿½
 		 * affichage boite de dialogue
-		 * suppression si refusé ou après récupération
+		 * suppression si refusï¿½ ou aprï¿½s rï¿½cupï¿½ration
 		 */
 	}
 

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-import android.util.Log;
-
 import com.awprog.scroidv2.Project;
 import com.awprog.scroidv2.AlphaScript.Data.DT;
 import com.awprog.scroidv2.AlphaScript.ErrorDialog.ScriptException;
@@ -137,9 +135,9 @@ public class Compiler {
 		
 		scopeStack.push(new ScopeObj(ScopeType.MAIN, 0));
 		
-		int line = 1;
+		int line = 0;
 		for(ArrayOfItems array : file) {
-			
+			line++;
 			if(array.isEmpty()) continue;
 			
 			ArrayOfItems.Item first = array.get(0);
@@ -234,7 +232,7 @@ public class Compiler {
 				 scopeStack.push(new ScopeObj(ScopeType.IF, line-1));
 			}
 			else if(first.getWord().equals(ELSIF)) {
-				 if(scopeStack.peek().type != ScopeType.IF || scopeStack.peek().type != ScopeType.ELSIF)
+				 if(scopeStack.peek().type != ScopeType.IF && scopeStack.peek().type != ScopeType.ELSIF)
 					 throw new ScriptException("Unexpected \""+ELSIF+"\"", line);
 				 
 				 ScopeObj so = scopeStack.pop();
@@ -250,7 +248,7 @@ public class Compiler {
 					 scopeStack.peek().hasSomeReturn = true;
 			}
 			else if(first.getWord().equals(ELSE)) {
-				 if(scopeStack.peek().type != ScopeType.IF || scopeStack.peek().type != ScopeType.ELSIF)
+				 if(scopeStack.peek().type != ScopeType.IF && scopeStack.peek().type != ScopeType.ELSIF)
 					 throw new ScriptException("Unexpected \""+ELSE+"\"", line);
 
 				 ScopeObj so = scopeStack.pop();
@@ -266,10 +264,11 @@ public class Compiler {
 					 scopeStack.peek().hasSomeReturn = true;
 			}
 			else if(first.getWord().equals(ENDIF)) {
-				 if(scopeStack.peek().type != ScopeType.IF || scopeStack.peek().type != ScopeType.ELSIF || scopeStack.peek().type != ScopeType.ELSE)
+				 if(scopeStack.peek().type != ScopeType.IF && scopeStack.peek().type != ScopeType.ELSIF && scopeStack.peek().type != ScopeType.ELSE)
 					 throw new ScriptException("Unexpected \""+ENDIF+"\"", line);
 				 
 				 ScopeObj so = scopeStack.pop();
+
 				 // Set the target line of the last 'if' or 'elsif' in case of 'false' condition 
 				 if(so.type != ScopeType.ELSE)
 					 file.get(so.line).get(0).targetLine = line-1;
@@ -290,17 +289,16 @@ public class Compiler {
 				 
 				 ScopeObj so = scopeStack.pop();
 				 // Set the target line of the corresponding 'while' in case of 'false' condition 
-				 file.get(so.line).get(0).targetLine = (line-1) + 1;
+				 file.get(so.line).get(0).targetLine = line + 1;
 				 // Set the target line to the corresponding 'while'
-				 first.targetLine = so.line-1;
+				 first.targetLine = so.line;
 				 
 				 // on fait h�riter le hasSomeReturn s'il est vrai
 				 if(so.hasSomeReturn)
 					 scopeStack.peek().hasSomeReturn = true;
 			}
-				
-			line++;
-		}
+		}// End for
+		
 		if(scopeStack.size() > 1)
 			throw new ScriptException("Uncomplete structure (missing end of "+scopeStack.peek().type.toString()+")", line-1);
 		
