@@ -772,7 +772,7 @@ public class Instructions {
 				StringBuilder txtOut;
 				
 				if(getParams().inRight.getType() == DT.string)
-					txtOut = ((StringData) getParams().inRight).getValue();
+					txtOut = new StringBuilder(((StringData) getParams().inRight).getValue());
 				else
 					txtOut = new StringBuilder(getParams().inRight.toString());
 				

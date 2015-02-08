@@ -231,7 +231,7 @@ public class ScriptRunner implements LowLevelAccess {
 	/** Pour sortir d'une fonction et retourner une valeur */
 	public void popContext(Data returnedData) {
 		currentContext = stackContext.pop();
-		stackContext.peek().stackData.push(returnedData);
+		currentContext.stackData.push(returnedData);
 	}
 	/** Mets fin d�finitivement � l'ex�cution */
 	public void end() {

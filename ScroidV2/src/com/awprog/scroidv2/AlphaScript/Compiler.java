@@ -274,7 +274,7 @@ public class Compiler {
 					 file.get(so.line).get(0).targetLine = line-1;
 				 
 				 // on commmunique le fullReturning au bloc parent s'il est toujours vrai
-				 if(so.returnInScope && so.fullReturning)
+				 if(so.returnInScope && so.fullReturning && so.type == ScopeType.ELSE)
 					 scopeStack.peek().returnInScope = true;
 				 // on fait h�riter le hasSomeReturn s'il est vrai
 				 if(so.hasSomeReturn)
@@ -289,7 +289,7 @@ public class Compiler {
 				 
 				 ScopeObj so = scopeStack.pop();
 				 // Set the target line of the corresponding 'while' in case of 'false' condition 
-				 file.get(so.line).get(0).targetLine = line + 1;
+				 file.get(so.line).get(0).targetLine = line;
 				 // Set the target line to the corresponding 'while'
 				 first.targetLine = so.line;
 				 
