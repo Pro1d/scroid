@@ -269,9 +269,8 @@ public class Compiler {
 				 
 				 ScopeObj so = scopeStack.pop();
 
-				 // Set the target line of the last 'if' or 'elsif' in case of 'false' condition 
-				 if(so.type != ScopeType.ELSE)
-					 file.get(so.line).get(0).targetLine = line-1;
+				 // Set the target line of the last 'if' or 'elsif' in case of 'false' condition or if the previous scope has been executed
+				 file.get(so.line).get(0).targetLine = line-1;
 				 
 				 // on commmunique le fullReturning au bloc parent s'il est toujours vrai
 				 if(so.returnInScope && so.fullReturning && so.type == ScopeType.ELSE)

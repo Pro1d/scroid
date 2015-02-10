@@ -139,6 +139,7 @@ public class ScriptRunner implements LowLevelAccess {
 			// INSTRUCTION
 			case INSTR:
 				final InstructionDefinition idef = instruction.instrDef;
+				//Log.i("###", "run "+idef.name);
 				Data leftParams, rightParams;
 	
 				/// Get right parameter from the stack \\\
@@ -201,8 +202,7 @@ public class ScriptRunner implements LowLevelAccess {
 	/**** Context & Cie ****/
 	/** Change le compteur ordinal :P */
 	public void setNextLine(int line) {
-		new Exception().printStackTrace();
-		/*stackContext.peek()*/currentContext.line = line;
+		currentContext.line = line;
 	}
 	/** Change de contexte (appel de fonction) */
 	public void pushContext(String file, int line, Data left, Data right) throws ScriptException {
@@ -223,6 +223,25 @@ public class ScriptRunner implements LowLevelAccess {
 			throw new ScriptException("The right parameter does not exist");
 		return currentContext.paramRight;
 	}
+	
+	/** Indique si on doit passer toute la structure conditionnelle courante **/
+	public boolean conditionalStructureSkipped() {
+		return currentContext.skipCondStruct.peek();
+	}
+	/** Permet de passer toute la structure conditionnelle courante **/
+	public void skipConditionalStructure() {
+		currentContext.skipCondStruct.pop();
+		currentContext.skipCondStruct.push(true);
+	}
+	/** Permet d'indiquer l'atteinte de la fin de la structure conditionnelle courante **/
+	public void endConditionalStructure() {
+		currentContext.skipCondStruct.pop();
+	}
+	/** Permet d'indiquer que l'on rentre dans une structure conditionnelle **/
+	public void enterConditionalStructure() {
+		currentContext.skipCondStruct.push(false);
+	}
+	
 	/** Pour sortir d'une fonction */
 	public void popContext() {
 		currentContext = stackContext.pop();
@@ -336,13 +355,23 @@ public class ScriptRunner implements LowLevelAccess {
 	}
 	
 	private class Context {
+		/** Nom du fichier **/
 		String file;
+		/** Ligne exécutée **/
 		int line;
+		/** Indique si on a exécuté un bloc d'un if-elsif-else-endif
+		 * -> il faute alors passer les blocs suivant **/
+		Stack<Boolean> skipCondStruct = new Stack<Boolean>();
+		/** Variables créées dans ce context**/
 		HashMap<String, Data> localVariable = new HashMap<String, Data>();
 		
+		/** Pile de données **/
 		Stack<Data> stackData = new Stack<Data>();
+		/** Pile d'instruction actuelle **/
 		StackInstructions instructions = null;
+		/** Liste des piles d'instructions du fichier (une par ligne) **/
 		ArrayList<StackInstructions> fileInstructions = null;
+		/** Paramètres donnés à la fonction**/
 		final Data paramLeft, paramRight;
 		
 		Context(String _file, int _line, Data _paramLeft, Data _paramRight) {
@@ -365,6 +394,7 @@ public class ScriptRunner implements LowLevelAccess {
 					return null;
 				
 				instructions = (StackInstructions) fileInstructions.get(line).clone();
+				//Log.i("###", "line "+line+" f:"+file);
 				line++;
 				//oneStep = false;// TODO copatibilit� changement de contexte
 			}

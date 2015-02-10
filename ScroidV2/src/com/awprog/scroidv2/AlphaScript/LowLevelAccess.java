@@ -15,6 +15,14 @@ public interface LowLevelAccess {
 	/** Donne les param�tres re�us par la fonction actuelle */
 	public Data getParameterLeft() throws ScriptException;
 	public Data getParameterRight() throws ScriptException;
+	/** Indique si on doit passer toute la structure conditionnelle courante **/
+	public boolean conditionalStructureSkipped();
+	/** Permet de passer toute la structure conditionnelle courante **/
+	public void skipConditionalStructure();
+	/** Permet d'indiquer l'atteinte de la fin de la structure conditionnelle courante **/
+	public void endConditionalStructure();
+	/** Permet d'indiquer que l'on rentre dans une structure conditionnelle **/
+	public void enterConditionalStructure();
 	
 	/** Pour sortir d'une fonction */
 	public void popContext();

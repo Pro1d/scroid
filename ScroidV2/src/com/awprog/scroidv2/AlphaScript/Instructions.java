@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.awprog.scroidv2.AlphaScript.Data.DT;
 import com.awprog.scroidv2.AlphaScript.ErrorDialog.ScriptException;
@@ -60,24 +61,32 @@ public class Instructions {
 		/********* IF ********/
 		addInstruction("if", 0, DT.none, DT.bool, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
+				lla.enterConditionalStructure();
 				if(((BooleanData)getParams().inRight).getValue() == false)
 					lla.setNextLine(param);
+				else
+					lla.skipConditionalStructure(); // pour les blocs suivants
 		}});
 		/********* ELSIF ********/
 		addInstruction("elsif", 0, DT.none, DT.bool, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
-				if(((BooleanData)getParams().inRight).getValue() == false)
+				if(lla.conditionalStructureSkipped())
 					lla.setNextLine(param);
+				else if(((BooleanData)getParams().inRight).getValue() == false)
+					lla.setNextLine(param);
+				else
+					lla.skipConditionalStructure(); // pour les blocs suivants
 		}});
 		/********* ELSE ********/
 		addInstruction("else", 0, DT.none, DT.none, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
-				// null; (error ?)
+				if(lla.conditionalStructureSkipped())
+					lla.setNextLine(param);
 		}});
 		/********* ENDIF ********/
 		addInstruction("endif", 0, DT.none, DT.none, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
-				// null; (error?)
+				lla.endConditionalStructure();
 		}});
 		/********* WHILE ********/
 		addInstruction("while", 0, DT.none, DT.bool, DT.none, new RunnableFunction() {
@@ -160,16 +169,49 @@ public class Instructions {
 				else
 					getParams().setReturn(Data.compare(left, right, left.getType()) >= 0);
 		}});
+		/********* IN *********/ 
+		addInstruction("in", 600, DT.string|DT.number, DT.struct, DT.bool, new RunnableFunction() {
+			@Override public void run(int param) throws ScriptException {
+				final Data left = getParams().inLeft;
+				final StructData range = (StructData) getParams().inRight;
+				/// retourne vrai si right[0] <= left <= right[1]
+				
+				/// String
+				if(left.getType() == DT.string) {
+					checkParamsStruct(new int[] {DT.string,  DT.string}, range, "in");
+					StringData min = (StringData) range.getDataAt(0);
+					StringData max = (StringData) range.getDataAt(1);
+					getParams().setReturn(Data.compare(min, left, DT.string) <= 0 && Data.compare(left, max, DT.string) <= 0);
+				}
+				/// Number
+				else {
+					checkParamsStruct(new int[] {DT.number,  DT.number}, range, "in");
+					double min = ((NumberData) range.getDataAt(0)).getValue();
+					double max = ((NumberData) range.getDataAt(1)).getValue();
+					double value = ((NumberData) left).getValue();
+					getParams().setReturn(min <= value && value <= max);	
+				}
+		}});
 
 		/********* AND ********/
 		addInstruction("and", 520, DT.bool, DT.bool, DT.bool, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				getParams().setReturn(((BooleanData)getParams().inLeft).getValue() && ((BooleanData)getParams().inRight).getValue());
 		}});
+		/********* NAND ********/
+		addInstruction("nand", 520, DT.bool, DT.bool, DT.bool, new RunnableFunction() {
+			@Override public void run(int param) throws ScriptException {
+				getParams().setReturn(!(((BooleanData)getParams().inLeft).getValue() && ((BooleanData)getParams().inRight).getValue()));
+		}});
 		/********* OR ********/
 		addInstruction("or", 500, DT.bool, DT.bool, DT.bool, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				getParams().setReturn(((BooleanData)getParams().inLeft).getValue() || ((BooleanData)getParams().inRight).getValue());
+		}});
+		/********* NOR ********/
+		addInstruction("nor", 500, DT.bool, DT.bool, DT.bool, new RunnableFunction() {
+			@Override public void run(int param) throws ScriptException {
+				getParams().setReturn(!(((BooleanData)getParams().inLeft).getValue() || ((BooleanData)getParams().inRight).getValue()));
 		}});
 		/********* XOR ********/
 		addInstruction("xor", 510, DT.bool, DT.bool, DT.bool, new RunnableFunction() {
@@ -274,10 +316,22 @@ public class Instructions {
 		addInstruction("sqrt", 800, DT.none, DT.number, DT.number, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				double result = Math.sqrt(((NumberData)getParams().inRight).getValue());
-				if(result == Double.NaN || result == Double.POSITIVE_INFINITY)
+				if(result == Double.NaN)
 					throw new ScriptException("Square root math error");
 				else
 					getParams().setReturn(result);
+		}});
+		/********* HYPOT ********/
+		addInstruction("hypot", 800, DT.none, DT.struct, DT.number, new RunnableFunction() {
+			@Override public void run(int param) throws ScriptException {
+				StructData values = (StructData) getParams().inRight;
+				checkParamsStruct(new int[] {DT.number, DT.number}, values, "hypot");
+				
+				double x = ((NumberData) values.getDataAt(0)).getValue();
+				double y = ((NumberData) values.getDataAt(1)).getValue();
+				double result = Math.hypot(x, y);
+				
+				getParams().setReturn(result);
 		}});
 		/********* CBRT ********/
 		addInstruction("cbrt", 800, DT.none, DT.number, DT.number, new RunnableFunction() {
@@ -288,11 +342,17 @@ public class Instructions {
 				else
 					getParams().setReturn(result);
 		}});
+		/********* EXP ********/
+		addInstruction("exp", 800, DT.none, DT.number, DT.number, new RunnableFunction() {
+			@Override public void run(int param) throws ScriptException {
+				double result = Math.exp(((NumberData)getParams().inRight).getValue());
+				getParams().setReturn(result);
+		}});
 		/********* LOG ********/
 		addInstruction("log", 800, DT.none, DT.number, DT.number, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				double result = Math.log(((NumberData)getParams().inRight).getValue());
-				if(result == Double.NaN || result == Double.NEGATIVE_INFINITY)
+				if(result == Double.NaN)
 					throw new ScriptException("Natural logarithm math error");
 				else
 					getParams().setReturn(result);
@@ -301,7 +361,7 @@ public class Instructions {
 		addInstruction("log10", 800, DT.none, DT.number, DT.number, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				double result = Math.log10(((NumberData)getParams().inRight).getValue());
-				if(result == Double.NaN || result == Double.NEGATIVE_INFINITY)
+				if(result == Double.NaN)
 					throw new ScriptException("Base 10 logarithm math error");
 				else
 					getParams().setReturn(result);
@@ -356,6 +416,17 @@ public class Instructions {
 		addInstruction("atan", 800, DT.none, DT.number, DT.number, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				getParams().setReturn(Math.atan(((NumberData)getParams().inRight).getValue()));
+		}});
+		/********* ATAN2 ********/
+		addInstruction("atan2", 800, DT.none, DT.struct, DT.number, new RunnableFunction() {
+			@Override public void run(int param) throws ScriptException {
+				StructData values = (StructData) getParams().inRight;
+				checkParamsStruct(new int[] {DT.number, DT.number}, values, "atan2");
+				
+				double x = ((NumberData) values.getDataAt(1)).getValue();
+				double y = ((NumberData) values.getDataAt(0)).getValue();
+				double result = Math.atan2(y, x);
+				getParams().setReturn(result);
 		}});
 		/********* RAD ********/
 		addInstruction("rad", 800, DT.none, DT.number, DT.number, new RunnableFunction() {
@@ -440,13 +511,13 @@ public class Instructions {
 				else
 					getParams().writeLeft(getParams().inRight.clone());
 		}});
-		/********* ICZ ********/
-		addInstruction("icz", 0, DT.none, DT.number|DT.writable, DT.none, new RunnableFunction() {
+		/********* ICS ********/
+		addInstruction("ics", 0, DT.none, DT.number|DT.writable, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				getParams().writeRight(((NumberData)getParams().inRight).getValue() + 1.0);
 		}});
-		/********* DCZ ********/
-		addInstruction("dcz", 0, DT.none, DT.number|DT.writable, DT.none, new RunnableFunction() {
+		/********* DCS ********/
+		addInstruction("dcs", 0, DT.none, DT.number|DT.writable, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				getParams().writeRight(((NumberData)getParams().inRight).getValue() - 1.0);
 		}});
@@ -919,6 +990,20 @@ public class Instructions {
 		addInstruction("argleft", 1000, DT.none, DT.none, DT.number, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				getParams().setReturn(lla.getParameterLeft()/*.clone() TODO check compatibility */);
+		}});
+		/********* ARG ********/
+		addInstruction("arg", 940, DT.none, DT.number, DT.all, new RunnableFunction() {
+			@Override public void run(int param) throws ScriptException {
+				int index = (int) ((NumberData) getParams().inRight).getValue();
+				if(lla.getParameterRight().type != DT.struct)
+					throw new ScriptException("The right argument is not a structure, it cannot be accessed with \'arg\'");
+				else {
+					StructData struct = (StructData) lla.getParameterRight();
+					if(index < 0 || index >= struct.getNbData())
+						throw new ScriptException("Out of bounds exception in \'arg\', index is "+index+", size is "+struct.getNbData());
+					else
+						getParams().setReturn(struct.getDataAt(index).clone());
+				}
 		}});
 	}
 	

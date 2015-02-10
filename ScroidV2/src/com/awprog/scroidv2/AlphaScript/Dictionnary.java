@@ -50,17 +50,20 @@ public class Dictionnary {
 					{"cmp", "leq", "[Number; String] value1", 	"[Number; String] value2", 	"[Boolean] result of comparison",	"Less or equal : compare numbers or according to the alphabetical order for strings"},
 					{"cmp", "gtr", "[Number; String] value1", 	"[Number; String] value2", 	"[Boolean] result of comparison",	"Greater : compare numbers or according to the alphabetical order for strings"},
 					{"cmp", "geq", "[Number; String] value1", 	"[Number; String] value2", 	"[Boolean] result of comparison",	"Greater or equal : compare numbers or according to the alphabetical order for strings"},
-				
+					{"cmp", "in", "[Number; String] value", 	"(Numbers or Strings : min, max)  range", 	"[Boolean] result of comparison",	"Range : check if the value is inside the given range, namely if min <= value <= max"},
+					
 				/* Logical operators */
 					{"lop", "and",	"[Boolean] value1", "[Boolean] value2", "[Boolean] result", 			"And"},
 					{"lop", "or",	"[Boolean] value1", "[Boolean] value2", "[Boolean] result", 			"Or"},
 					{"lop", "xor",	"[Boolean] value1", "[Boolean] value2", "[Boolean] result", 			"Exclusive or"},
 					{"lop", "not",	"",					"[Boolean] value", 	"[Boolean] inverse of value",	"Not"},
-	
+					{"lop", "nand",	"[Boolean] value1", "[Boolean] value2", "[Boolean] result", 			"Not and, equivalent to \'not (value1 and value2)\'"},
+					{"lop", "nor",	"[Boolean] value1", "[Boolean] value2", "[Boolean] result", 			"Not or, equivalent to \'not (value1 or value2)\'"},
+					
 				/* Variable assignements */
 					{"vas", "set", 		"[All] variable", 			"[All] value", 			"", "Set the variable to a value of the same type, create the variable if it still does not exist"},
-					{"vas", "icz", 		"", 						"[Number] variable", 	"", "Increaze the variable"},
-					{"vas", "dcz", 		"", 						"[Number] variable", 	"", "Decreaze the variable"},
+					{"vas", "ics", 		"", 						"[Number] variable", 	"", "Increase by one the variable"},
+					{"vas", "dcs", 		"", 						"[Number] variable", 	"", "Decrease by one the variable"},
 					{"vas", "setadd", 	"[Number; String] variable","[Number; All] value", 	"", "Add the value to the variable; In case of variable is a String, convert value2 to String and concatenate it to the variable"},
 					{"vas", "setsub", 	"[Number] variable", 		"[Number] value", 		"", "Substract the value from the variable"},
 					{"vas", "setmul", 	"[Number; String] variable","[Number] factor", 		"", "Multiply the variable by the factor; In case of string : join the string end-to-end 'factor' time"},
@@ -78,7 +81,9 @@ public class Dictionnary {
 				
 				/* Mathematic functions */
 					{"mfc", "sqrt", "", "[Number] x",		"[Number] result", 	"Square root of x"},
+					{"mfc", "hypot","", "([Number] x, [Number] y)",	"[Number] result", 	"Equivalent to sqrt(x*x + y*y)"},
 					{"mfc", "cbrt", "", "[Number] x",		"[Number] result", 	"Cube root of x"},
+					{"mfc", "exp",  "", "[Number] x",		"[Number] result", 	"\'e\' to the power of x"},
 					{"mfc", "log",  "", "[Number] x",		"[Number] result", 	"Natural logarithm of x"},
 					{"mfc", "log10","", "[Number] x",		"[Number] result", 	"Decimal logarithm of x"},
 					//"logn", "", "", "", ""},
@@ -89,6 +94,7 @@ public class Dictionnary {
 					{"mfc", "asin", "", "[Number] x",		"[Number] rad", 	"Arcsinus of x"},
 					{"mfc", "acos", "", "[Number] x",		"[Number] rad", 	"Arccosinus of x"},
 					{"mfc", "atan", "", "[Number] x",		"[Number] rad", 	"Arctangent of x"},
+					{"mfc", "atan2", "","([Number] x, [Number] y)",	"[Number] rad", 	"Arctangent of y/x within the range [-pi; pi]"},
 					{"mfc", "deg",  "", "[Number] rad",		"[Number] degree", 	"Convert rad to degree"},
 					{"mfc", "rad",  "", "[Number] degree",	"[Number] rad", 	"Convert degree to rad"},
 					//"sinh", "", "", "", ""},
@@ -154,12 +160,15 @@ public class Dictionnary {
 				{"tim", "clock", "", "", 				"[Number] elapsed time",	"Return the Elapsed time since the beginning"},
 				
 			/** Native API lvl1 function **/
-				{"fct", "func", "", "[String] function's name", "", "Start the definition of a new function"},
+				{"fct", "func", "", "function's name", "", "Start the definition of a new function"},
+				{"fct", "funcl", "", "function's name", "", "Start the definition of a new function with a left parameter"},
+				{"fct", "funcr", "", "function's name", "", "Start the definition of a new function with a right parameter"},
+				{"fct", "funclr", "", "function's name", "", "Start the definition of a new function with left and right parameter"},
 				{"fct", "endfunc", "", "", "", "End the definition of the new function"},
 				{"fct", "return", "", "[All] something to return", "", "Set the data returned by the current function"},
-				{"fct", "arg", "", "[Number] index of argument", "", "Return the argument at the given index"},
-				{"fct", "argcount", "", "", "", "Return the count of argument given to the function"},
-				{"fct", "call", "", "[String] function to call", "[All] function's return", "Call an user function"},
+				{"fct", "arg", "", "[Number] index of argument", "", "If the right parameter is a structure, return the data at the given index"},
+				{"fct", "argleft", "", "", "", "return the left parameter"},
+				{"fct", "argright", "", "", "", "return the right parameter"},
 				
 			/** Native API lvl2 graph ** /
 				
@@ -231,33 +240,33 @@ public class Dictionnary {
 		/**
 		 * String : rouge -> orange
 		 * struct : marron
-		 * boolean : bleu foncé -> cyan
-		 * standard : violet foncé -> rose
+		 * boolean : bleu foncï¿½ -> cyan
+		 * standard : violet foncï¿½ -> rose
 		 * number : gris
 		 * math : vert
 		 * 
 		 */
 		String s = funcAndParamsAndDoc[search][0];
 		if(s.compareTo("fct") == 0)
-			return 0xFF0000DD; // bleu très foncé
+			return 0xFF0000DD; // bleu trï¿½s foncï¿½
 		else if(s.compareTo("bas") == 0)
-			return 0xFF0000FF; // bleu foncé
+			return 0xFF0000FF; // bleu foncï¿½
 		else if(s.compareTo("lop") == 0)
 			return 0xFF0028FF; // bleu
 		else if(s.compareTo("cmp") == 0)
 			return 0xFF0056FF; // bleu clair
 		else if(s.compareTo("boo") == 0)
-			return 0xFF0084FF; // cyan foncé
+			return 0xFF0084FF; // cyan foncï¿½
 		
 		else if(s.compareTo("i/o") == 0)
-			return 0xFF800080; // violet foncé
+			return 0xFF800080; // violet foncï¿½
 		else if(s.compareTo("std") == 0)
 			return 0xFFA000A0; // violet
 		else if(s.compareTo("vas") == 0)
 			return 0xFFBB00BB; // violet clair
 
 		else if(s.compareTo("cst") == 0)
-			return 0xFF004000; // vert foncé
+			return 0xFF004000; // vert foncï¿½
 		else if(s.compareTo("mfc") == 0)
 			return 0xFF177017; // vert
 		else if(s.compareTo("bop") == 0)
