@@ -2,10 +2,10 @@ package com.awprog.scroidv2.AlphaScript;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Stack;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.awprog.scroidv2.AlphaScript.Data.DT;
 import com.awprog.scroidv2.AlphaScript.ErrorDialog.ScriptException;
@@ -113,6 +113,18 @@ public class Instructions {
 			@Override public void run(int param) throws ScriptException {
 				host.goToBeginFor();
 		}});*/
+		/********* TER ********/
+		addInstruction("ter", 400, DT.bool, DT.struct, DT.all, new RunnableFunction() {
+			@Override public void run(int param) throws ScriptException {
+				StructData values = (StructData) getParams().inRight;
+				if(values.getNbData() != 2)
+					throw new ScriptException("The function \'ter\' must have exactly two right parameters contained in a structure");
+				
+				if(((BooleanData)getParams().inLeft).getValue())
+					getParams().setReturn(values.getDataAt(0));
+				else
+					getParams().setReturn(values.getDataAt(1));
+		}});
 		
 
 		/********* EQUAL ********/
@@ -468,11 +480,17 @@ public class Instructions {
 			@Override public void run(int param) throws ScriptException {
 				getParams().setReturn(-((NumberData)getParams().inRight).getValue());
 		}});
-		
+
+		final Random random = new Random();
 		/********* RANDOM ********/
 		addInstruction("rand", 999, DT.none, DT.none, DT.number, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
-				getParams().setReturn(Math.random());
+				getParams().setReturn(random.nextDouble());
+		}});
+		/********* SEED ********/
+		addInstruction("seed", 999, DT.none, DT.number, DT.none, new RunnableFunction() {
+			@Override public void run(int param) throws ScriptException {
+				random.setSeed(Double.doubleToRawLongBits(((NumberData)getParams().inRight).getValue()));
 		}});
 		/********* PI ********/
 		addInstruction("pi", 999, DT.none, DT.none, DT.number, new RunnableFunction() {
@@ -751,6 +769,11 @@ public class Instructions {
 			@Override public void run(int param) throws ScriptException {
 				getParams().setReturn(((StructData)getParams().inRight).getNbData());
 		}});
+		/********* EMPTY ********/
+		addInstruction("empty", 920, DT.none, DT.struct, DT.bool, new RunnableFunction() {
+			@Override public void run(int param) throws ScriptException {
+				getParams().setReturn(((StructData)getParams().inRight).getNbData() == 0);
+		}});
 		/********* PUSHBACK ********/
 		addInstruction("pushback", 930, DT.struct|DT.writable|DT.notdef, DT.all, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
@@ -806,6 +829,12 @@ public class Instructions {
 				else
 					struct.popData(index);
 		}});
+		/********* CONCAT ********/
+		addInstruction("concat", 930, DT.struct|DT.writable, DT.struct, DT.none, new RunnableFunction() {
+			@Override public void run(int param) throws ScriptException {
+				((StructData) getParams().inLeft).getValue().addAll(((StructData) getParams().inRight).getValue());
+				//((StructData) getParams().inLeft).pushBackData(getParams().inRight.clone());
+		}});
 		/********* INSERT ******** /
 		instructions.put("insert", new InstructionDefinition("insert", 0, DT.struct|DT.writable, DT.struct, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
@@ -856,6 +885,14 @@ public class Instructions {
 					getParams().inRight = lla.createVar(((NotDefData)getParams().inRight).getName(), DT.number);
 				
 				lla.in(LowLevelAccess.CommandIn.NUMBER, getParams().inRight);
+		}});
+		/********* READBOOL ********/
+		addInstruction("readbool", 0, DT.none, DT.bool|DT.writable|DT.notdef, DT.none, new RunnableFunction() {
+			@Override public void run(int param) throws ScriptException {
+				if(getParams().inRight.getType() == DT.notdef)
+					getParams().inRight = lla.createVar(((NotDefData)getParams().inRight).getName(), DT.bool);
+				
+				lla.in(LowLevelAccess.CommandIn.BOOLEAN, getParams().inRight);
 		}});
 		/********* SCAN ********/
 		addInstruction("scan", 0, DT.none, DT.string|DT.writable|DT.notdef, DT.none, new RunnableFunction() {
@@ -916,7 +953,7 @@ public class Instructions {
 				if(index < 0 || index >= s.length())
 					throw new ScriptException("Out of bounds exception in charAt");
 				
-				getParams().setReturn(new StringBuilder(s.charAt(index)));
+				getParams().setReturn(new StringBuilder().appendCodePoint(s.codePointAt(index)));
 		}});
 		/********* TOUPPER ********/
 		addInstruction("toupper", 930, DT.none, DT.string, DT.string, new RunnableFunction() {
@@ -1036,8 +1073,8 @@ public class Instructions {
 		final public int before, returned, after;
 		public final RunnableFunction run;
 		/** Priority
-		 * from 0 to 1000 : constants, accessor func, math func, operator, comparator, logical operators, terminal func (whithout returning statement)
-		 * 					1000		900				800			700		600			  500					0
+		 * from 0 to 1000 : constants, accessor func, math func, operator, comparator, logical operators, ternary operator, terminal func (whithout returning statement)
+		 * 					1000		900				800			700		600			  500				400					0
 		 * 1000    : constant values
 		 * 900~999 : operator
 		 * 800~899 : mathematic function

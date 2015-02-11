@@ -42,7 +42,8 @@ public class Dictionnary {
 					{"bas", "endwhile", 	"", "", 					"", "End the loop"},
 					//"dowhile", "", "", "", ""},
 					//"enddowhile", "", "", "", ""},
-				
+					{"bas", "ter", 		"[Boolean] condition", 	"([All] value1, [All] value2)", "[All] result", "Ternary operator : return \'value1\' if the condition is true, otherwise return \'value2\'"},
+					
 				/* Comparators */
 					{"cmp", "equ", "[All] value1", 				"[All] value2", 			"[Boolean] result of comparison",	"Equal : compare data of the same kind"},
 					{"cmp", "neq", "[All] value1", 				"[All] value2", 			"[Boolean] result of comparison",	"Not equal : compare data of the same kind"},
@@ -122,23 +123,27 @@ public class Dictionnary {
 					{"sfc", "pushfront",	"[Struct] variable",	"[All] value", 														"",					"Add the value at the beginning of the structure"},
 					{"sfc", "popfront",		"",						"[Struct] variable", 												"[All] value",		"Remove and return the first value of the structure"},
 					{"sfc", "remove",		"[Struct] variable",	"[Number] index", 													"",					"Remove from the structure the value at the specified index"},
-				//	{"sfc", "insert",		"[Struct] variable",	"([Number] index, [All] value", 									"",					"Insert the value in the structure at the specified index"},
+					{"sfc", "concat",		"[Struct] variable",	"[Struct] array", 													"",					"Add the data of the array at the end of the structure"},
+					//	{"sfc", "insert",		"[Struct] variable",	"([Number] index, [All] value", 									"",					"Insert the value in the structure at the specified index"},
 					{"sfc", "size",			"",						"[Struct] tab", 													"[Number] size",	"Return the size of the struct"},
+					{"sfc", "empty",		"",						"[Struct] tab", 													"[Boolean] isEmpty","Return true if the structure is empty"},
 					
 				/* Constants */
 					{"cst", "rand",		"", "", "[Number] random value",		"Return a pseudo-random value in the range [0; 1["},
-					{"cst", "pi", 		"", "", "[Number] pi", 					"\u03C0 = 3.14159263538979323..."},
+					{"cst", "pi", 		"", "", "[Number] pi", 					"\u03C0 = "+Math.PI+"..."},
 					{"cst", "e", 		"", "", "[Number] e",					"e = "+Math.E+"..."},
 					{"boo", "true",		"", "", "[Boolean] true",				"True"},
 					{"boo", "false",	"", "", "[Boolean] false",				"False"},
 					{"str", "endl",		"", "", "[String] new line character",	"End Line = \"\\n\""},
 				
+					{"std", "seed",		"", "", "[Number] seed",		"Set the seed to use for the random value genrator"},
+					
 				/* standard I/O */
 					{"i/o", "cleartext",	"", "",						"", "Clear the console"},
 					{"i/o", "print", 		"", "[All] value",			"", "Convert the value to a String and print it in the console"},
 					{"i/o", "println",		"", "[All] value",			"", "Convert the value to a String and print it with and new line in the console"},
 					{"i/o", "readnb",		"", "[Number] variable",	"", "Read a number given by the user, create the variable if it still does not exist"},
-				//	{"i/o", "readbool",	"", "[Boolean] variable",	"", "Read a boolean given by the user, create the variable if it still does not exist"},
+					{"i/o", "readbool",		"", "[Boolean] variable",	"", "Read a boolean given by the user, create the variable if it still does not exist"},
 					{"i/o", "scan",		"", "[String] variable",	"", "Read a texte given by the user, create the variable if it still does not exist"},
 					{"std", "stop",		"", "",						"", "End the program"},
 					{"std", "pause",	"", "",						"", "Wait the button is pressed down to continue"},
@@ -148,7 +153,7 @@ public class Dictionnary {
 			
 				{"str", "substr",	"[String] source",		"([Number] start, [Number] end)", 			"[String] sub-string",						"Return a new String containing the characters from start to end-1"},
 				{"str", "charat",	"[String] source",		"[Number] index", 							"[String] character",						"Return a new String containing the character at the given index"},
-				{"str", "replace",	"[String] variable",	"([Number] index"+/* ; ([Number] start, [Number] end)*/", [String] replacement)",	"",	"Replace the characters at index and the nexts by the remplacement string"},
+				{"str", "replace",	"[String] variable",	"([Number] index"+/* ; ([Number] start, [Number] end)*/", [String] replacement)",	"",	"Replace the characters at index and the following by the remplacement string"},
 			//	{"str", "insert",	"[String] variable",	"([Number] index, [String] string)",		"",											"Insert the string before the character at the index"},
 				{"str", "tolower",	"",						"[String] string",							"[String] lower",							"Returns the string converted to lower case"},
 				{"str", "toupper",	"",						"[String] string",							"[String] upper",							"Return the string converted to upper case"},

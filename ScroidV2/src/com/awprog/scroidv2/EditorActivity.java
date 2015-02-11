@@ -255,6 +255,7 @@ public class EditorActivity extends Activity {
 		// Save the whole project
 		mProject.save();
 	}
+	
 	static final int PREV_FILE = -1, NEXT_FILE = 1;
 	/** Changes the current file, go to the file at pos current+'dir'; save the current file before **/
 	private void changeCurrentFile(int dir) {

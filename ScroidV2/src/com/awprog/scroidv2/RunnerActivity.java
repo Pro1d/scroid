@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -36,6 +37,7 @@ public class RunnerActivity extends Activity {
 	private Button mButtonContinue;
 	
 	// Console
+	private ScrollView mScrollViewConsole;
 	private TextView mTextViewConsole;
 	private StringBuilder mText;
 	
@@ -226,6 +228,7 @@ in your code.
 		currentVisibleInputView = mProgressBar;
 	}
 	private void setUpOutputView() {
+		mScrollViewConsole = (ScrollView) findViewById(R.id.sv_executeur);
 		mTextViewConsole = (TextView) findViewById(R.id.tv_executeur);
 	}
 	
@@ -293,5 +296,6 @@ in your code.
 	
 	private void setTextConsole(StringBuilder sb) {
 		mTextViewConsole.setText(sb.toString());
+		mScrollViewConsole.fullScroll(View.FOCUS_DOWN);
 	}
 }

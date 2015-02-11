@@ -78,7 +78,7 @@ public class DocView {
 					if(f.getBefore().length() == 0)
 						v.findViewById(R.id.tv_before_item_doc).setVisibility(View.GONE);
 					else
-						((TextView) v.findViewById(R.id.tv_before_item_doc)).setText("("+f.getBefore()+")");
+						((TextView) v.findViewById(R.id.tv_before_item_doc)).setText(f.getBefore());
 					
 					// TextView NAME
 					((TextView) v.findViewById(R.id.tv_name_item_doc)).setText(f.getName().toUpperCase(Locale.getDefault()));
@@ -87,7 +87,7 @@ public class DocView {
 					if(f.getAfter().length() == 0)
 						v.findViewById(R.id.tv_after_item_doc).setVisibility(View.GONE);
 					else
-						((TextView) v.findViewById(R.id.tv_after_item_doc)).setText("("+f.getAfter()+")");
+						((TextView) v.findViewById(R.id.tv_after_item_doc)).setText(f.getAfter());
 
 					// TextView COMMENTARY
 					if(f.getCommentary().length() == 0)

@@ -24,7 +24,7 @@
     <color name="edit_pressed">#88B6E3</color>
     <color name="edit_focused">#BAD5EF</color>
     
-    <color name="item_doc_background">#EEE</color>
+    <color name="item_doc_background">#FAFAFA</color>
     <color name="item_doc_title_background">#8CF</color>
     <color name="item_doc_name">#222</color>
     <color name="item_doc_bef_aft">#444</color>
