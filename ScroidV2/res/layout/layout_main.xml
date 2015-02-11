@@ -13,7 +13,7 @@
         android:background="@color/titre_background"
         android:gravity="top|center_horizontal"
         android:padding="@dimen/padding_verysmall"
-        android:text="@string/hello_world"
+        android:text="@string/projects_title"
         android:textColor="@color/titre_texte"
         tools:context=".Main" />
 

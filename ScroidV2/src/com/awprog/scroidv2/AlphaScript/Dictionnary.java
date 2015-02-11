@@ -117,7 +117,7 @@ public class Dictionnary {
 					{"sfc", "getindex",		"[Struct] tab",			"[Number; Struct of Number] index; multiple index", 				"[All] value",		"Return a copy of the value at the index; in case of a structure containing other(s) structure(s), you can use a multiple index (index1, index2, ..) to access recursively to the values"},// read-only
 					{"sfc", "setindex",		"[Struct] variable",	"([Number; Struct of Number] index; multiple index, [All] value)",	"",					"Set the case to value at the index; in case of a structure containing other(s) structure(s), you can use a multiple index (index1, index2, ..) to access recursively to the values"}, // write-only
 					{"sfc", "clearstruct",	"",						"[Struct] variable",												"",					"Clear all the value of the variable"},
-					{"sfc", "createstruct",	"[Struct] variable",	"([Number; Struct of Number] index; multiple index, [All] value)",	"",					"Create a new structure with the given dimension(s) and fill it with the given value"},
+					{"sfc", "newstruct",	"[Struct] variable",	"([Number; Struct of Number] index; multiple index, [All] value)",	"",					"Create a new structure with the given dimension(s) and fill it with the given value"},
 					{"sfc", "pushback",		"[Struct] variable",	"[All] value", 														"",					"Add the value at the end of the structure"},
 					{"sfc", "popback",		"",						"[Struct] variable", 												"[All] value",		"Remove and return the last value of the structure"},
 					{"sfc", "pushfront",	"[Struct] variable",	"[All] value", 														"",					"Add the value at the beginning of the structure"},

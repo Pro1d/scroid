@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -45,6 +46,8 @@ public class EditorActivity extends Activity {
 		mEditCodeView = (ColorEditText) findViewById(R.id.et_editeur);
 		mPositionIndicator = (TextView) findViewById(R.id.tv_editeur_line);
 		setPositionIndicator(0, 0);
+		mEditCodeView.setHorizontallyScrolling(true);
+		mEditCodeView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 		
 		/** Image buttons in the left-side tool box **/
 		// Button to save
@@ -228,7 +231,7 @@ public class EditorActivity extends Activity {
 		if(line != lastPosition[0] || column != lastPosition[1]) {
 			lastPosition[0] = line;
 			lastPosition[1] = column;
-			mPositionIndicator.setText(""+line + " : "+column);
+			mPositionIndicator.setText(""+line + ":"+column);
 		}
 	}
 	/** Sets the title with the name of the current file **/

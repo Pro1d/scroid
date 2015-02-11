@@ -713,13 +713,13 @@ public class Instructions {
 
 				((StructData) getParams().inRight).clear();
 		}});
-		/********* CREATESTRUCT ********/
-		addInstruction("createstruct", 0, DT.struct|DT.writable|DT.notdef, DT.struct|DT.number, DT.none, new RunnableFunction() {
+		/********* NEWSTRUCT ********/
+		addInstruction("newstruct", 0, DT.struct|DT.writable|DT.notdef, DT.struct|DT.number, DT.none, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
 				Data struct = getParams().inLeft;
 				StructData right = (StructData) getParams().inRight;
 
-				checkParamsStruct(new int[]{DT.number|DT.struct, DT.all}, right, "setindex");
+				checkParamsStruct(new int[]{DT.number|DT.struct, DT.all}, right, "newstruct");
 				
 				if(struct.getType() == DT.notdef)
 					getParams().inLeft = struct = lla.createVar(((NotDefData) struct).getName(), DT.struct);
@@ -737,7 +737,7 @@ public class Instructions {
 				else {
 					StructData list = (StructData) right.getDataAt(0);
 					if(list.getNbData() == 0)
-						throw new ScriptException("Missing the data of the index in setindex");
+						throw new ScriptException("Missing the data of the index in newstruct");
 					
 					Stack<Data> parent = new Stack<Data>();
 					Stack<Data> child = new Stack<Data>();
@@ -746,7 +746,7 @@ public class Instructions {
 					for(int depth = 0; depth < list.getNbData(); depth++) {
 						Data sizeData = list.getDataAt(depth);
 						if(sizeData.getType() != DT.number)
-							throw new ScriptException("The index must be specified by a number in setindex");
+							throw new ScriptException("The index must be specified by a number in newstruct");
 						int size = (int) ((NumberData) sizeData).getValue();
 						
 						child.clear();
