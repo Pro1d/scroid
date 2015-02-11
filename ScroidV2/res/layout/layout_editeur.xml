@@ -16,7 +16,7 @@
             android:id="@+id/ib_editeur_title_previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/titre_background"
+            android:background="@color/selector_title_button"
             android:contentDescription="@string/app_name"
             android:src="@android:drawable/ic_media_previous" />
 
@@ -28,13 +28,13 @@
         	android:padding="@dimen/padding_verysmall"
         	android:background="@color/titre_background"
             android:gravity="center"
-            android:textColor="@color/titre_background" />
+            android:textColor="@color/titre_texte" />
         
         <ImageButton
             android:id="@+id/ib_editeur_title_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/titre_background"
+            android:background="@color/selector_title_button"
             android:contentDescription="@string/app_name"
             android:src="@android:drawable/ic_media_next" />
         
