@@ -63,8 +63,8 @@ public class Dictionnary {
 					
 				/* Variable assignements */
 					{"vas", "set", 		"[All] variable", 			"[All] value", 			"", "Set the variable to a value of the same type, create the variable if it still does not exist"},
-					{"vas", "ics", 		"", 						"[Number] variable", 	"", "Increase by one the variable"},
-					{"vas", "dcs", 		"", 						"[Number] variable", 	"", "Decrease by one the variable"},
+					{"vas", "ics", 		"", 		"[Number] variable",	"[Number] result", 	"Increase by one the variable and return the new value"},
+					{"vas", "dcs", 		"", 		"[Number] variable",	"[Number] result", 	"Decrease by one the variable and return the new value"},
 					{"vas", "setadd", 	"[Number; String] variable","[Number; All] value", 	"", "Add the value to the variable; In case of variable is a String, convert value2 to String and concatenate it to the variable"},
 					{"vas", "setsub", 	"[Number] variable", 		"[Number] value", 		"", "Substract the value from the variable"},
 					{"vas", "setmul", 	"[Number; String] variable","[Number] factor", 		"", "Multiply the variable by the factor; In case of string : join the string end-to-end 'factor' time"},

@@ -81,7 +81,7 @@ public class ScriptRunner implements LowLevelAccess {
 				} catch (ScriptException e) {
 					e.setCat("Running");
 					e.setFile(currentContext.file);
-					e.setLine(currentContext.line-1);
+					e.setLine(currentContext.line/*-1*/);
 					running = false;
 					throw e;
 				}

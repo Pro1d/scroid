@@ -530,14 +530,18 @@ public class Instructions {
 					getParams().writeLeft(getParams().inRight.clone());
 		}});
 		/********* ICS ********/
-		addInstruction("ics", 0, DT.none, DT.number|DT.writable, DT.none, new RunnableFunction() {
+		addInstruction("ics", 960, DT.none, DT.number|DT.writable, DT.number, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
-				getParams().writeRight(((NumberData)getParams().inRight).getValue() + 1.0);
+				double result = ((NumberData)getParams().inRight).getValue() + 1.0;
+				getParams().writeRight(result);
+				getParams().setReturn(result);
 		}});
 		/********* DCS ********/
-		addInstruction("dcs", 0, DT.none, DT.number|DT.writable, DT.none, new RunnableFunction() {
+		addInstruction("dcs", 960, DT.none, DT.number|DT.writable, DT.number, new RunnableFunction() {
 			@Override public void run(int param) throws ScriptException {
-				getParams().writeRight(((NumberData)getParams().inRight).getValue() - 1.0);
+				double result = ((NumberData)getParams().inRight).getValue() - 1.0;
+				getParams().writeRight(result);
+				getParams().setReturn(result);
 		}});
 		/********* SETADD ********/
 		addInstruction("setadd", 0, DT.string|DT.number|DT.writable, DT.all, DT.none, new RunnableFunction() {
